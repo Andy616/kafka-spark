@@ -92,8 +92,8 @@ def main():
 
     # df.to_json(save_path, orient='index', force_ascii=False)
     finish = time.clock()
-    working_time = start-finish
-    print(f'Used {round(working_time / 3600, 2)} hrs')
+    working_time = finish-start
+    print(f'Used {round(working_time / 3600, 3)} hrs')
 
 
 if __name__ == '__main__':
