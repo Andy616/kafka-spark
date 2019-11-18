@@ -91,12 +91,13 @@ def main():
     to_mongo(dbname, collname, df, ip)
 
     # df.to_json(save_path, orient='index', force_ascii=False)
-    working_time = time.perf_counter()
+    finish = time.clock()
+    working_time = start-finish
     print(f'Used {round(working_time / 3600, 2)} hrs')
 
 
 if __name__ == '__main__':
-
+    start = time.clock()
     page_range = 50
     dbname = 'restaurants'
     collname = 'walkerland'
