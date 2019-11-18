@@ -104,10 +104,8 @@ if __name__ == '__main__':
 
     if not os.isatty(sys.stdin.fileno()):
         ip = sys.stdin.readlines()[0].split("\n")[0]
-        print(ip)
     else:
         print("Skip, so it doesn't hang")
-    # Remember to add ".json" at the end of the file name 'cause the output is json file >ω<
-    # save_path = 'C:\\Users\\Big data\\Desktop\\walkerland_restaurants.json'
+
 
     main()
