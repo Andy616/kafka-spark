@@ -105,7 +105,6 @@ if __name__ == '__main__':
 
     if not os.isatty(sys.stdin.fileno()):
         ip = sys.stdin.readlines()[0].split("\n")[0]
-        print(ip)
     else:
         print("Skip, so it doesn't hang")
 
