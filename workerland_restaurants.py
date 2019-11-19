@@ -99,7 +99,7 @@ def main():
 
 if __name__ == '__main__':
     start = time.clock()
-    page_range = 20
+    page_range = 50
     dbname = 'restaurants'
     collname = 'walkerland'
 
@@ -107,6 +107,5 @@ if __name__ == '__main__':
         ip = sys.stdin.readlines()[0].split("\n")[0]
     else:
         print("Skip, so it doesn't hang")
-
 
     main()
