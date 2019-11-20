@@ -1,4 +1,4 @@
-import requests
+﻿import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 import time, json
@@ -100,7 +100,7 @@ def main():
 if __name__ == '__main__':
     start = time.clock()
     page_range = 50
-    dbname = 'restaurants'
+    dbname = 'project'
     collname = 'walkerland'
 
     if not os.isatty(sys.stdin.fileno()):
