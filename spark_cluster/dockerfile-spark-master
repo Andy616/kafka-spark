@@ -1,4 +1,4 @@
-FROM spark-base:2.4.4-pandas
+FROM spark-base:2.4.4
 
 COPY start-master.sh /
 ENV SPARK_MASTER_PORT 7077
