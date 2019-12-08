@@ -11,6 +11,11 @@ RUN apk update
 RUN apk add --no-cache --virtual=.build-dependencies wget ca-certificates
 RUN apk add --no-cache python3
 RUN mv /usr/bin/python3 /usr/bin/python
+RUN apk --no-cache --update-cache add gcc gfortran python3-dev build-base wget freetype-dev libpng-dev openblas-dev
+RUN pip3 install --upgrade pip
+#RUN apk --no-cache add musl-dev linux-headers g++
+#RUN ln -s /usr/include/locale.h /usr/include/xlocale.h
+RUN pip install bs4 requests fake_useragent selenium numpy pyspark pymongo 
 
 RUN apk add --no-cache bash curl jq && \
     cd "/tmp" && \
