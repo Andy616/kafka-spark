@@ -66,6 +66,20 @@ services:
     volumes:
        - /mnt/spark-apps:/opt/spark-apps
        - /mnt/spark-data:/opt/spark-data
+  
+  mongo:
+    image: mongo:latest
+    restart: always
+    container_name: 'mongo'
+    hostname: mongodb
+    ports:
+      - '27017:27017'
+    networks:
+      spark-network:
+        ipv4_address: 10.5.0.6
+    volumes:
+      - db-data:/data/db
+
 networks:
   spark-network:
     driver: bridge
@@ -73,3 +87,5 @@ networks:
      driver: default
      config:
        - subnet: 10.5.0.0/16
+volumes:
+  db-data:
