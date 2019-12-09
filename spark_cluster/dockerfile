@@ -16,6 +16,10 @@ RUN pip3 install --upgrade pip
 #RUN apk --no-cache add musl-dev linux-headers g++
 #RUN ln -s /usr/include/locale.h /usr/include/xlocale.h
 RUN pip install bs4 requests fake_useragent selenium numpy pyspark pymongo 
+RUN pip install python-dateutil==2.8.1
+RUN pip install pytz==2019.3
+RUN pip install six==1.13.0
+RUN pip install pandas
 
 RUN apk add --no-cache bash curl jq && \
     cd "/tmp" && \

@@ -1,5 +1,4 @@
 1.Run build-images.sh 
-
 2.Run docker-compose.
 
 To make sure each worker(node) and the master has the same envionment, 
