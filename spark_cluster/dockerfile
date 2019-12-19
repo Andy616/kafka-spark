@@ -11,15 +11,15 @@ RUN apk update
 RUN apk add --no-cache --virtual=.build-dependencies wget ca-certificates
 RUN apk add --no-cache python3
 RUN mv /usr/bin/python3 /usr/bin/python
-RUN apk --no-cache --update-cache add gcc gfortran python3-dev build-base wget freetype-dev libpng-dev openblas-dev
+RUN apk --no-cache --update-cache add gcc gfortran python3-dev build-base wget freetype-dev libpng-dev openblas-dev g++ musl-dev libzmq musl-dev zeromq-dev 
 RUN pip3 install --upgrade pip
 #RUN apk --no-cache add musl-dev linux-headers g++
 #RUN ln -s /usr/include/locale.h /usr/include/xlocale.h
-RUN pip install bs4 requests fake_useragent selenium numpy pyspark pymongo 
+RUN pip install bs4 requests fake_useragent selenium numpy pyspark pymongo pyzmq
 RUN pip install python-dateutil==2.8.1
 RUN pip install pytz==2019.3
 RUN pip install six==1.13.0
-RUN pip install pandas
+RUN pip install pandas jupyter
 
 RUN apk add --no-cache bash curl jq && \
     cd "/tmp" && \

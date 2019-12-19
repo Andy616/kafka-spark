@@ -7,14 +7,19 @@ services:
     ports:
       - "8080:8080"
       - "7077:7077"
+      - "8888:8888"
     networks: 
       spark-network:
         ipv4_address: 10.5.0.2
     volumes:
        - /mnt/spark-apps:/opt/spark-apps
        - /mnt/spark-data:/opt/spark-data
+       - pyspark-files:/pyspark-files
     environment:
+      - "SPARK_HOME=/spark"
       - "SPARK_LOCAL_IP=spark-master"
+      - "PYSPARK_DRIVER_PYTHON=jupyter"
+      - "PYSPARK_DRIVER_PYTHON_OPTS=notebook --allow-root --no-browser --ip 0.0.0.0"
   spark-worker-1:
     image: spark-worker:2.4.4
     container_name: spark-worker-1
@@ -49,23 +54,23 @@ services:
     volumes:
        - /mnt/spark-apps:/opt/spark-apps
        - /mnt/spark-data:/opt/spark-data
-  spark-worker-3:
-    image: spark-worker:2.4.4
-    container_name: spark-worker-3
-    hostname: spark-worker-3
-    depends_on:
-      - spark-master
-    ports:
-      - "8083:8081"
-    env_file: ./env-spark-worker.sh
-    environment:
-      - "SPARK_LOCAL_IP=spark-worker-3"
-    networks: 
-      spark-network:
-        ipv4_address: 10.5.0.5
-    volumes:
-       - /mnt/spark-apps:/opt/spark-apps
-       - /mnt/spark-data:/opt/spark-data
+#  spark-worker-3:
+#    image: spark-worker:2.4.4
+#    container_name: spark-worker-3
+#    hostname: spark-worker-3
+#    depends_on:
+#      - spark-master
+#    ports:
+#      - "8083:8081"
+#    env_file: ./env-spark-worker.sh
+#    environment:
+#      - "SPARK_LOCAL_IP=spark-worker-3"
+#    networks: 
+#      spark-network:
+#        ipv4_address: 10.5.0.5
+#    volumes:
+#       - /mnt/spark-apps:/opt/spark-apps
+#       - /mnt/spark-data:/opt/spark-data
   
   mongo:
     image: mongo:latest
@@ -78,7 +83,7 @@ services:
       spark-network:
         ipv4_address: 10.5.0.6
     volumes:
-      - data:/data/db
+      - mongo-data:/data/db
 
 networks:
   spark-network:
@@ -88,4 +93,5 @@ networks:
      config:
        - subnet: 10.5.0.0/16
 volumes:
-  data:
+  mongo-data:
+  pyspark-files:
