@@ -1,0 +1,141 @@
+# Change to path that contains docker-compose.yml  (linux & mac only)
+cd ~/env
+
+# Start Zookeeper & Kafka
+docker-compose up -d
+
+# Get into Docker container
+docker exec -it env_kafka_1 bash
+
+# Create a new kafka topic "test4"
+kafka-topics --create --zookeeper zookeeper:2181 \
+  --replication-factor 1 --partitions 1 --topic test4
+  
+# Segments and Indexes
+cd /var/lib/kafka/data
+
+ls -l test4-0
+
+# Log Cleanup Policy: Example
+
+# Kafka Topic: delete (if Exist)
+kafka-topics --delete --zookeeper zookeeper:2181 --topic product-inventory
+
+# Create our topic with appropriate configs
+kafka-topics --zookeeper zookeeper:2181 --create \
+  --topic product-inventory \
+  --partitions 1 --replication-factor 1 \
+  --config cleanup.policy=compact \
+  --config min.cleanable.dirty.ratio=0.00001 \
+  --config segment.ms=1000
+
+# Describe and show configurations of topic "product-inventory"
+kafka-configs --zookeeper zookeeper:2181 \
+  --entity-type topics  \
+  --entity-name product-inventory \
+  --describe
+
+# In a new console, we start a consumer
+kafka-console-consumer \
+  --bootstrap-server kafka:9092 \
+  --topic product-inventory \
+  --from-beginning \
+  --property print.key=true \
+  --property key.separator=,
+
+
+# We start pushing data to the topic
+kafka-console-producer --broker-list kafka:9092 \
+--topic product-inventory \
+--property parse.key=true \
+--property key.separator=,
+
+# Copy these messages & paste to the console:
+123,{"NB":"8"}
+456,{"PAD":"9"}
+789,{"TV":"10"}
+456,{"PAD":"7"}
+789,{"TV":"11"}
+456,{"PAD":"6"}
+789,{"TV":"12"}
+456,{"PAD":"5"}
+789,{"TV":"13"}
+
+# We observe that the messages have been pushed and read by the consumer
+
+# we know push the following new messages (after 20~30 seconds later)
+789,{"TV":"55"}
+123,{"NB":"66"}
+
+# In a new console, we start a "2nd" consumer
+kafka-console-consumer \
+  --bootstrap-server kafka:9092 \
+  --topic product-inventory \
+  --from-beginning \
+  --property print.key=true \
+  --property key.separator=,
+
+  
+## Change Topic Configurations
+
+# Topic configuration example: (Create)
+kafka-topics --create \
+  --zookeeper zookeeper:2181 \
+  --replication-factor 1 \
+  --partitions 3 \
+  --topic my-topic \
+  --config max.message.bytes=64000 \
+  --config flush.messages=1  
+
+# Topic configuration example: (Query)
+kafka-topics --zookeeper zookeeper:2181 \
+  --topic my-topic \
+  --describe
+
+# Topic configuration example: (Update)
+kafka-topics --zookeeper zookeeper:2181 \
+  --topic my-topic \
+  --alter \
+  --config max.message.bytes=128000
+
+# Topic configuration example: (Remove)
+kafka-topics --zookeeper zookeeper:2181 \
+  --topic my-topic \
+  --alter \
+  --delete-config  max.message.bytes
+  
+# Topic configuration example: (Query)
+kafka-topics --zookeeper zookeeper:2181 \
+  --topic my-topic \
+  --describe
+
+# Topic configuration example: (Query) - 2nd method
+kafka-configs --zookeeper zookeeper:2181 \
+  --entity-type topics  \
+  --entity-name my-topic \
+  --describe
+
+# ****************************************************
+# *** Kafka Broker configuration operation samples ***
+# ****************************************************
+
+# Broker configuration example: (Update)
+kafka-configs --bootstrap-server kafka:9092 \
+  --entity-type brokers \
+  --entity-name 1 \
+  --alter \
+  --add-config background.threads=20
+
+ 
+# Broker configuration example: (Query)
+kafka-configs --bootstrap-server kafka:9092 \
+  --entity-type brokers \
+  --entity-name 1 \
+  --describe
+
+# Broker configuration example: (Remove)
+kafka-configs --bootstrap-server kafka:9092 \
+  --entity-type brokers \
+  --entity-name 1 \
+  --alter \
+  --delete-config background.threads
