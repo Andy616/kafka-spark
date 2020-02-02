@@ -1,3 +1,3 @@
-1.Run build-images.sh 
+1.bash ./build-images.sh 
 
-2.Run docker-compose.
+2.docker-compose up -d
